@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>YouTube Money Calculator: Check Any Channel's Earnings (Free)</title>
+<meta name="description" content="Free YouTube money calculator. Enter any channel or your own views to see estimated daily, monthly and yearly earnings, plus subscribers and views.">
+<link rel="canonical" href="https://channelworth.com/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="YouTube Money Calculator: Check Any Channel's Earnings (Free)">
+<meta property="og:description" content="Free YouTube money calculator. Enter any channel or your own views to see estimated daily, monthly and yearly earnings, plus subscribers and views.">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How does this YouTube money calculator work?", "acceptedAnswer": {"@type": "Answer", "text": "Enter a channel to see an estimate based on the views of its recent uploads, or type your own daily views. We multiply views by a rough earnings range per 1,000 views (RPM) for the niche you pick."}}, {"@type": "Question", "name": "How much does YouTube pay per 1,000 views?", "acceptedAnswer": {"@type": "Answer", "text": "It varies a lot. RPM depends on the niche, the audience country, the video length and the season. Finance and tech channels usually earn more per view than music or kids content."}}, {"@type": "Question", "name": "Are the earnings shown exact?", "acceptedAnswer": {"@type": "Answer", "text": "No. Only the channel owner can see real earnings in YouTube Studio. Everything here is an estimate, and sponsorships, memberships and merchandise are not included."}}, {"@type": "Question", "name": "Where does the data come from?", "acceptedAnswer": {"@type": "Answer", "text": "Views, subscribers and video counts come from the public YouTube Data API. YouTube rounds subscriber counts, so they can differ slightly from the exact figure."}}, {"@type": "Question", "name": "How often are the stats updated?", "acceptedAnswer": {"@type": "Answer", "text": "Channel results are cached for a few hours, so numbers can be slightly behind YouTube."}}, {"@type": "Question", "name": "Is ChannelWorth connected to YouTube?", "acceptedAnswer": {"@type": "Answer", "text": "No. ChannelWorth is an independent tool and is not affiliated with or endorsed by YouTube."}}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F2F5F9;--surface:#FFFFFF;--ink:#0E2038;--muted:#5B6B80;--line:#D6DEE8;--accent:#0B8F8F;--accent-ink:#FFFFFF;--warn:#B45309;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0B1624;--surface:#122238;--ink:#E6EEF8;--muted:#93A4BA;--line:#223652;--accent:#3CC8C8;--accent-ink:#06202A;--warn:#F5B35A}}
+:root[data-theme="dark"]{--bg:#0B1624;--surface:#122238;--ink:#E6EEF8;--muted:#93A4BA;--line:#223652;--accent:#3CC8C8;--accent-ink:#06202A;--warn:#F5B35A}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 72px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.55;font-size:17px}
+.wrap{max-width:980px;margin:0 auto;padding:0 20px}
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.nav-in{max-width:980px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:14px}
+.brand{color:inherit;text-decoration:none;flex:none}
+.nsearch{flex:1;max-width:340px;display:flex;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:2px 4px 2px 12px}
+.nsearch:focus-within{border-color:var(--accent)}
+.nsearch input{flex:1;min-width:0;border:0;background:transparent;color:inherit;font:inherit;font-size:15px;padding:7px 4px;outline:none}
+.nsearch button{border:0;background:transparent;color:var(--muted);padding:6px;display:grid;place-items:center}
+.nsearch button svg{width:18px;height:18px}
+.links{display:flex;gap:18px;margin-left:auto;font-size:15px}
+.links a{color:var(--muted);text-decoration:none}
+.links a:hover{color:var(--ink)}
+.icon{flex:none;width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);display:grid;place-items:center;padding:0}
+@media (max-width:700px){.links,.bt{display:none}.nsearch{max-width:none}}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;letter-spacing:-.01em}
+.brand svg{width:30px;height:30px}
+.demo{font-size:13px;color:var(--warn);border:1px solid var(--warn);border-radius:99px;padding:2px 12px}
+.hero{padding:44px 0 8px}
+h1{font-size:clamp(34px,6.4vw,64px);line-height:1.04;letter-spacing:-.025em;font-weight:800;margin:0 0 14px;max-width:18ch}
+.lead{color:var(--muted);max-width:52ch;margin:0 0 26px}
+.search{display:flex;gap:8px;max-width:620px;background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:6px}
+.search:focus-within{border-color:var(--accent)}
+.search input{flex:1;min-width:0;border:0;background:transparent;color:inherit;font:inherit;padding:10px 12px;outline:none}
+button{font:inherit;cursor:pointer}
+.go{background:var(--accent);color:var(--accent-ink);border:0;border-radius:10px;padding:10px 20px;font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0;align-items:center;color:var(--muted);font-size:15px}
+.chip{background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:99px;padding:3px 13px;font-size:14px}
+.chip:hover{border-color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.pulse{display:block;width:100%;height:70px;margin-top:22px}
+.pulse path{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:900;stroke-dashoffset:900;animation:draw 2.2s ease-out forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){.pulse path{animation:none;stroke-dashoffset:0}}
+#msg{color:var(--warn);min-height:24px;margin:10px 0 0;font-size:15px}
+section{padding:34px 0}
+h2{font-size:28px;letter-spacing:-.015em;margin:0 0 18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px}
+.ch-head{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.avatar{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:22px;color:#fff}
+.ch-head h3{margin:0;font-size:24px;line-height:1.15}
+.sub{color:var(--muted);font-size:15px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:22px}
+.stat{border-left:3px solid var(--accent);padding-left:12px}
+.stat b{display:block;font-size:28px;line-height:1.1;letter-spacing:-.02em}
+.stat span{color:var(--muted);font-size:14px}
+.chart{width:100%;height:auto;display:block}
+.chart-note{color:var(--muted);font-size:14px;margin:6px 0 0}
+.cmp{margin-top:26px;padding-top:20px;border-top:1px solid var(--line)}
+.cmp select{font:inherit;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:6px 10px;margin-left:8px}
+.row{display:grid;grid-template-columns:110px 1fr;gap:12px;align-items:center;margin:12px 0;font-size:15px}
+.bars{display:grid;gap:6px}
+.bar{height:26px;border-radius:6px;min-width:4px;display:flex;align-items:center;padding:0 8px;font-size:13px;font-weight:600;color:#fff;white-space:nowrap}
+.bar.a{background:var(--accent);color:var(--accent-ink)}
+.bar.b{background:#6D7FA3}
+.legend{display:flex;gap:16px;font-size:14px;color:var(--muted);margin-top:6px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px}
+.tools{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center;color:var(--muted);font-size:15px}
+.tools button{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:5px 12px;font-size:14px}
+.tools button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:560px}
+th,td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--line);font-size:15px}
+th{color:var(--muted);font-weight:600;font-size:14px}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:0}
+tbody tr{cursor:pointer}
+tbody tr:hover{background:var(--bg)}
+.rk{color:var(--muted);width:40px}
+details{border-bottom:1px solid var(--line);padding:14px 0}
+summary{cursor:pointer;font-weight:600}
+details p{color:var(--muted);margin:10px 0 0;max-width:62ch}
+footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--muted);font-size:14px}
+@media (max-width:520px){.row{grid-template-columns:1fr;gap:4px}body{font-size:16px}}
+.avatar{object-fit:cover;background:var(--line)}
+.vids{display:grid;gap:12px;margin-top:6px}
+.vid{display:grid;grid-template-columns:96px 1fr;gap:12px;align-items:center;font-size:15px}
+.vid img{width:96px;height:54px;object-fit:cover;border-radius:6px;background:var(--line)}
+.vid a{color:inherit;text-decoration:none;font-weight:600;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vid a:hover{text-decoration:underline}
+.vbar{height:6px;border-radius:3px;background:var(--accent);margin-top:6px}
+.cf{display:flex;gap:8px;margin:10px 0 4px;flex-wrap:wrap}
+.cf input{flex:1;min-width:180px;font:inherit;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px 12px}
+.cf button{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px 14px}
+h3.sec{font-size:18px;margin:22px 0 8px}
+footer a{color:inherit}
+.earn{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:16px;margin:0 0 20px}
+.earn h3{margin:0 0 4px;font-size:18px}
+.earn select,.cg select,.cg input{font:inherit;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-top:4px;width:100%}
+.earn select{background:var(--surface);width:auto;margin:0 0 12px}
+.cg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:20px}
+.cg label{font-size:15px;color:var(--muted)}
+.earn .stats{margin:12px 0 10px}
+.earn .stat b{font-size:22px}
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="nav-in">
+    <a class="brand" href="#" aria-label="ChannelWorth home"><span class="brand" style="display:flex;align-items:center;gap:10px"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="var(--accent)"/><path d="M4 17h6l3-8 5 15 3-7h7" fill="none" stroke="var(--accent-ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="bt">ChannelWorth</span></span></a>
+    <form class="nsearch" id="nf" role="search">
+      <input id="nq" type="text" placeholder="Find channel" aria-label="Find channel" autocomplete="off">
+      <button type="submit" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
+    </form>
+    <nav class="links" aria-label="Sections"><a href="#calc">Calculator</a><a href="#top-channels">Top channels</a><a href="#faq">FAQ</a></nav>
+    <button class="icon" id="th" type="button" aria-label="Switch light or dark theme"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
+  </div>
+</header>
+<div class="wrap">
+
+<div class="hero">
+  <h1>YouTube Money Calculator</h1>
+  <p class="lead">Check any channel's estimated earnings, subscribers and views, or use the calculator with your own numbers.</p>
+  <form class="search" id="f" role="search">
+    <input id="q" type="text" placeholder="Channel name, @handle or video link" aria-label="Channel name or handle" autocomplete="off">
+    <button class="go" type="submit">Check earnings</button>
+  </form>
+  <div id="msg" role="status"></div>
+  <div class="chips" id="chips">Try:</div>
+  <svg class="pulse" viewBox="0 0 600 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0 40H110L124 40L134 10L147 66L160 40H300L312 40L321 22L331 54L340 40H600"/></svg>
+</div>
+
+<section id="result" aria-live="polite"></section>
+
+<section id="calc">
+  <h2>Calculate with your own numbers</h2>
+  <div class="card">
+    <div class="cg">
+      <label>Daily views<input id="dv" type="number" min="0" value="10000" inputmode="numeric"></label>
+      <label>Niche<select id="cn"></select></label>
+    </div>
+    <div class="stats" id="co"></div>
+    <p class="chart-note">Rough estimate of ad revenue only. Real earnings depend on your audience, video length and ad rates.</p>
+  </div>
+</section>
+
+<section id="top-channels">
+  <h2>Top channels</h2>
+  <div class="tools">Sort by:
+    <button data-k="subs" aria-pressed="true">Subscribers</button>
+    <button data-k="views" aria-pressed="false">Total views</button>
+    <button data-k="videos" aria-pressed="false">Videos</button>
+  </div>
+  <div class="scroll"><table>
+    <thead><tr><th class="rk">#</th><th>Channel</th><th class="n">Subscribers</th><th class="n">Views</th><th class="n">Videos</th></tr></thead>
+    <tbody id="tb"></tbody>
+  </table></div>
+</section>
+
+<section id="faq">
+  <h2>Frequently asked questions</h2>
+  <details><summary>How does this YouTube money calculator work?</summary><p>Enter a channel to see an estimate based on the views of its recent uploads, or type your own daily views. We multiply views by a rough earnings range per 1,000 views (RPM) for the niche you pick.</p></details>
+  <details><summary>How much does YouTube pay per 1,000 views?</summary><p>It varies a lot. RPM depends on the niche, the audience country, the video length and the season. Finance and tech channels usually earn more per view than music or kids content.</p></details>
+  <details><summary>Are the earnings shown exact?</summary><p>No. Only the channel owner can see real earnings in YouTube Studio. Everything here is an estimate, and sponsorships, memberships and merchandise are not included.</p></details>
+  <details><summary>Where does the data come from?</summary><p>Views, subscribers and video counts come from the public YouTube Data API. YouTube rounds subscriber counts, so they can differ slightly from the exact figure.</p></details>
+  <details><summary>How often are the stats updated?</summary><p>Channel results are cached for a few hours, so numbers can be slightly behind YouTube.</p></details>
+  <details><summary>Is ChannelWorth connected to YouTube?</summary><p>No. ChannelWorth is an independent tool and is not affiliated with or endorsed by YouTube.</p></details>
+</section>
+
+<footer>© ChannelWorth. Not affiliated with or endorsed by YouTube. Uses YouTube API Services, see the <a href="http://www.google.com/policies/privacy" rel="noopener">Google Privacy Policy</a> and our <a href="/privacy.html">Privacy Policy</a>.</footer>
+</div>
+
+<script>
+var cur=null,cmp=null,sortK='subs',topList=[],niche='general';
+var NICHES={general:['General / entertainment',.8,3.5],gaming:['Gaming',.7,2.5],edu:['Education',2,6],tech:['Tech & reviews',2.5,8],fin:['Finance & business',6,18],life:['Vlogs & lifestyle',1,4],music:['Music',.3,1.5],kids:['Kids',.3,1.5]};
+function money(n){return n>=1e6?'$'+(n/1e6).toFixed(2)+'M':n>=1e3?'$'+(n/1e3).toFixed(1)+'K':'$'+Math.round(n)}
+function range(v,n){return money(v*n[1]/1000)+' – '+money(v*n[2]/1000)}
+function nicheOpts(sel){return Object.keys(NICHES).map(function(k){return'<option value="'+k+'"'+(k===sel?' selected':'')+'>'+NICHES[k][0]+'</option>'}).join('')}
+function monthlyViews(c){var L=c.latest||[];if(L.length<2)return null;var t=L.map(function(v){return+new Date(v.published)}),span=(Math.max.apply(null,t)-Math.min.apply(null,t))/864e5;if(span<1)span=1;var per=Math.min(30,(L.length-1)/span*30);var avg=L.reduce(function(s,v){return s+v.views},0)/L.length;return Math.round(avg*per)}
+function earnHtml(c){var mv=monthlyViews(c);if(mv==null)return'';var n=NICHES[niche];
+return'<div class="earn"><h3>Estimated earnings</h3><label class="sub">Niche <select id="nz">'+nicheOpts(niche)+'</select></label>'+
+'<div class="stats"><div class="stat"><b>'+range(mv,n)+'</b><span>Per month (about '+fmt(mv)+' views)</span></div><div class="stat"><b>'+range(mv*12,n)+'</b><span>Per year</span></div><div class="stat"><b>'+range(c.views,n)+'</b><span>Lifetime ad revenue</span></div></div>'+
+'<p class="chart-note">Estimate from recent uploads and a rough earnings range per 1,000 views. Only the channel owner sees real earnings. Sponsorships and other income are not included.</p></div>'}
+function calcRender(){var dv=Math.max(0,+$('dv').value||0),n=NICHES[$('cn').value]||NICHES.general;
+$('co').innerHTML='<div class="stat"><b>'+range(dv,n)+'</b><span>Per day</span></div><div class="stat"><b>'+range(dv*30,n)+'</b><span>Per month</span></div><div class="stat"><b>'+range(dv*365,n)+'</b><span>Per year</span></div>'}
+function calcInit(){$('cn').innerHTML=nicheOpts('general');$('dv').addEventListener('input',calcRender);$('cn').addEventListener('change',calcRender);calcRender()}
+function $(i){return document.getElementById(i)}
+function fmt(n){if(n==null)return'Hidden';if(n>=1e9)return(n/1e9).toFixed(2)+'B';if(n>=1e6)return(n/1e6).toFixed(2)+'M';if(n>=1e3)return(n/1e3).toFixed(1)+'K';return String(n)}
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')}
+function dt(s){return new Date(s).toLocaleDateString('en',{year:'numeric',month:'short',day:'numeric'})}
+function country(c){try{return c?new Intl.DisplayNames(['en'],{type:'region'}).of(c):''}catch(e){return c}}
+function api(u){return fetch(u).then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.error||'Something went wrong.');return j})})}
+function load(q){$('msg').textContent='Loading...';return api('/api/channel?q='+encodeURIComponent(q)).then(function(c){$('msg').textContent='';return c}).catch(function(e){$('msg').textContent=e.message;return null})}
+function show(q){load(q).then(function(c){if(!c)return;cur=c;cmp=null;render();$('result').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'})})}
+function bars(a,b,label,get,f){var va=get(a)||0,vb=get(b)||0,m=Math.max(va,vb,1);
+return'<div class="row"><div>'+label+'</div><div class="bars"><div class="bar a" style="width:'+Math.max(8,va/m*100)+'%">'+f(get(a))+'</div><div class="bar b" style="width:'+Math.max(8,vb/m*100)+'%">'+f(get(b))+'</div></div></div>'}
+function render(){
+var c=cur;if(!c){$('result').innerHTML='';return}
+var meta=[c.handle,country(c.country),c.published?'Joined '+new Date(c.published).getFullYear():''].filter(Boolean).map(esc).join(' · ');
+var mx=Math.max.apply(null,c.latest.map(function(v){return v.views}).concat([1]));
+var vids=c.latest.map(function(v){return'<div class="vid"><img src="'+esc(v.thumb)+'" alt="" loading="lazy"><div><a href="https://www.youtube.com/watch?v='+esc(v.id)+'" target="_blank" rel="noopener">'+esc(v.title)+'</a><span class="sub">'+fmt(v.views)+' views · '+dt(v.published)+'</span><div class="vbar" style="width:'+Math.max(2,v.views/mx*100)+'%"></div></div></div>'}).join('');
+var cm='';
+if(cmp){cm=bars(c,cmp,'Subscribers',function(x){return x.subs},fmt)+bars(c,cmp,'Total views',function(x){return x.views},fmt)+bars(c,cmp,'Videos',function(x){return x.videos},fmt)+bars(c,cmp,'Avg views / video',function(x){return x.avg},fmt)+'<div class="legend"><span><i style="background:var(--accent)"></i>'+esc(c.title)+'</span><span><i style="background:#6D7FA3"></i>'+esc(cmp.title)+'</span></div>'}
+$('result').innerHTML='<div class="card"><div class="ch-head"><img class="avatar" src="'+esc(c.thumb)+'" alt="" width="58" height="58"><div><h3>'+esc(c.title)+'</h3><div class="sub">'+meta+'</div></div></div>'+
+'<div class="stats"><div class="stat"><b>'+fmt(c.subs)+'</b><span>Subscribers</span></div><div class="stat"><b>'+fmt(c.views)+'</b><span>Total views</span></div><div class="stat"><b>'+c.videos.toLocaleString()+'</b><span>Videos</span></div><div class="stat"><b>'+fmt(c.avg)+'</b><span>Avg views per video</span></div></div>'+
+earnHtml(c)+(vids?'<h3 class="sec">Latest videos</h3><div class="vids">'+vids+'</div>':'')+
+'<div class="cmp"><h3 class="sec" style="margin-top:0">Compare with another channel</h3><form class="cf" id="cf"><input id="c2" type="text" placeholder="Name or @handle" aria-label="Second channel"><button type="submit">Compare</button></form>'+cm+'</div></div>';
+if($('nz'))$('nz').onchange=function(){niche=this.value;render()};$('cf').addEventListener('submit',function(e){e.preventDefault();var q=$('c2').value;if(!q.trim())return;load(q).then(function(o){if(o){cmp=o;render()}})});
+}
+function renderTable(){
+var rows=topList.slice().sort(function(a,b){return(b[sortK]||0)-(a[sortK]||0)});
+$('tb').innerHTML=rows.length?rows.map(function(c,i){return'<tr data-id="'+esc(c.id)+'" tabindex="0"><td class="rk">'+(i+1)+'</td><td><b>'+esc(c.title)+'</b> <span class="sub">'+esc(c.handle)+'</span></td><td class="n">'+fmt(c.subs)+'</td><td class="n">'+fmt(c.views)+'</td><td class="n">'+c.videos.toLocaleString()+'</td></tr>'}).join(''):'<tr><td colspan="5" class="sub">Top channels could not be loaded.</td></tr>';
+}
+(function(){var t=null;try{t=localStorage.getItem('cw-theme')}catch(e){}if(t)document.documentElement.setAttribute('data-theme',t)})();
+$('th').onclick=function(){var d=document.documentElement,c=d.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'),n=c==='dark'?'light':'dark';d.setAttribute('data-theme',n);try{localStorage.setItem('cw-theme',n)}catch(e){}};
+$('nf').addEventListener('submit',function(e){e.preventDefault();var q=$('nq').value;if(q.trim()){$('q').value=q;show(q)}});
+$('f').addEventListener('submit',function(e){e.preventDefault();var q=$('q').value;if(q.trim())show(q);else $('msg').textContent='Enter a channel name, @handle or video link.'});
+['@MrBeast','@mkbhd','@veritasium'].forEach(function(h){var b=document.createElement('button');b.className='chip';b.textContent=h;b.onclick=function(){$('q').value=h;show(h)};$('chips').appendChild(document.createTextNode(' '));$('chips').appendChild(b)});
+function openRow(e){var r=e.target.closest('tr');if(r&&r.getAttribute('data-id')){show(r.getAttribute('data-id'))}}
+$('tb').addEventListener('click',openRow);
+$('tb').addEventListener('keydown',function(e){if(e.key==='Enter')openRow(e)});
+document.querySelectorAll('.tools button').forEach(function(b){b.addEventListener('click',function(){sortK=b.getAttribute('data-k');document.querySelectorAll('.tools button').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});renderTable()})});
+calcInit();api('/api/top').then(function(r){topList=r;renderTable()}).catch(function(){renderTable()});
+</script>
+</body>
+</html>
