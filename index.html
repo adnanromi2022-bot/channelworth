@@ -10,7 +10,7 @@
 <meta property="og:title" content="YouTube Money Calculator: Check Any Channel's Earnings (Free)">
 <meta property="og:description" content="Free YouTube money calculator. Enter any channel or your own views to see estimated daily, monthly and yearly earnings, plus subscribers and views.">
 <meta name="twitter:card" content="summary">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How does this YouTube money calculator work?", "acceptedAnswer": {"@type": "Answer", "text": "Enter a channel to see an estimate based on the views of its recent uploads, or type your own daily views. We multiply views by a rough earnings range per 1,000 views (RPM) for the niche you pick."}}, {"@type": "Question", "name": "How much does YouTube pay per 1,000 views?", "acceptedAnswer": {"@type": "Answer", "text": "It varies a lot. RPM depends on the niche, the audience country, the video length and the season. Finance and tech channels usually earn more per view than music or kids content."}}, {"@type": "Question", "name": "Are the earnings shown exact?", "acceptedAnswer": {"@type": "Answer", "text": "No. Only the channel owner can see real earnings in YouTube Studio. Everything here is an estimate, and sponsorships, memberships and merchandise are not included."}}, {"@type": "Question", "name": "Where does the data come from?", "acceptedAnswer": {"@type": "Answer", "text": "Views, subscribers and video counts come from the public YouTube Data API. YouTube rounds subscriber counts, so they can differ slightly from the exact figure."}}, {"@type": "Question", "name": "How often are the stats updated?", "acceptedAnswer": {"@type": "Answer", "text": "Channel results are cached for a few hours, so numbers can be slightly behind YouTube."}}, {"@type": "Question", "name": "Is ChannelWorth connected to YouTube?", "acceptedAnswer": {"@type": "Answer", "text": "No. ChannelWorth is an independent tool and is not affiliated with or endorsed by YouTube."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How does this YouTube money calculator work?", "acceptedAnswer": {"@type": "Answer", "text": "Enter a channel to see an estimate based on the views of its recent uploads, or type your own daily views. We multiply views by a rough earnings range per 1,000 views (RPM) for the niche you pick, adjusted for where the audience is likely to be."}}, {"@type": "Question", "name": "How much does YouTube pay per 1,000 views?", "acceptedAnswer": {"@type": "Answer", "text": "It varies a lot. RPM depends on the niche, the audience country, the video length and the season. Finance and tech channels usually earn more per view than music or kids content."}}, {"@type": "Question", "name": "Are the earnings shown exact?", "acceptedAnswer": {"@type": "Answer", "text": "No. Only the channel owner can see real earnings in YouTube Studio. Everything here is an estimate, and sponsorships, memberships and merchandise are not included."}}, {"@type": "Question", "name": "Where does the data come from?", "acceptedAnswer": {"@type": "Answer", "text": "Views, subscribers and video counts come from the public YouTube Data API. YouTube rounds subscriber counts, so they can differ slightly from the exact figure."}}, {"@type": "Question", "name": "How often are the stats updated?", "acceptedAnswer": {"@type": "Answer", "text": "Channel results are cached for a few hours, so numbers can be slightly behind YouTube."}}, {"@type": "Question", "name": "Is ChannelWorth connected to YouTube?", "acceptedAnswer": {"@type": "Answer", "text": "No. ChannelWorth is an independent tool and is not affiliated with or endorsed by YouTube."}}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
@@ -111,6 +111,7 @@ footer a{color:inherit}
 .earn h3{margin:0 0 4px;font-size:18px}
 .earn select,.cg select,.cg input{font:inherit;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-top:4px;width:100%}
 .earn select{background:var(--surface);width:auto;margin:0 0 12px}
+.earn label{display:inline-block;margin-right:14px}
 .cg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:20px}
 .cg label{font-size:15px;color:var(--muted)}
 .earn .stats{margin:12px 0 10px}
@@ -151,6 +152,7 @@ footer a{color:inherit}
     <div class="cg">
       <label>Daily views<input id="dv" type="number" min="0" value="10000" inputmode="numeric"></label>
       <label>Niche<select id="cn"></select></label>
+      <label>Audience<select id="ca"></select></label>
     </div>
     <div class="stats" id="co"></div>
     <p class="chart-note">Rough estimate of ad revenue only. Real earnings depend on your audience, video length and ad rates.</p>
@@ -172,7 +174,7 @@ footer a{color:inherit}
 
 <section id="faq">
   <h2>Frequently asked questions</h2>
-  <details><summary>How does this YouTube money calculator work?</summary><p>Enter a channel to see an estimate based on the views of its recent uploads, or type your own daily views. We multiply views by a rough earnings range per 1,000 views (RPM) for the niche you pick.</p></details>
+  <details><summary>How does this YouTube money calculator work?</summary><p>Enter a channel to see an estimate based on the views of its recent uploads, or type your own daily views. We multiply views by a rough earnings range per 1,000 views (RPM) for the niche you pick, adjusted for where the audience is likely to be.</p></details>
   <details><summary>How much does YouTube pay per 1,000 views?</summary><p>It varies a lot. RPM depends on the niche, the audience country, the video length and the season. Finance and tech channels usually earn more per view than music or kids content.</p></details>
   <details><summary>Are the earnings shown exact?</summary><p>No. Only the channel owner can see real earnings in YouTube Studio. Everything here is an estimate, and sponsorships, memberships and merchandise are not included.</p></details>
   <details><summary>Where does the data come from?</summary><p>Views, subscribers and video counts come from the public YouTube Data API. YouTube rounds subscriber counts, so they can differ slightly from the exact figure.</p></details>
@@ -184,19 +186,23 @@ footer a{color:inherit}
 </div>
 
 <script>
-var cur=null,cmp=null,sortK='subs',topList=[],niche='general';
+var cur=null,cmp=null,sortK='subs',topList=[],niche='general',aud='auto';
 var NICHES={general:['General / entertainment',.8,3.5],gaming:['Gaming',.7,2.5],edu:['Education',2,6],tech:['Tech & reviews',2.5,8],fin:['Finance & business',6,18],life:['Vlogs & lifestyle',1,4],music:['Music',.3,1.5],kids:['Kids',.3,1.5]};
+var AUDS={us:['US, UK, Canada, Australia, W. Europe',1],eu:['Europe, Japan, Gulf states',.7],mix:['Global mix',.5],lat:['Latin America, Turkey, E. Europe',.4],asia:['South Asia, SE Asia, Africa',.2]};
+var TIER={US:'us',CA:'us',AU:'us',GB:'us',DE:'us',NO:'us',CH:'us',NZ:'us',IE:'us',SE:'us',DK:'us',NL:'us',AT:'us',FI:'us',FR:'eu',JP:'eu',KR:'eu',IT:'eu',ES:'eu',BE:'eu',AE:'eu',SA:'eu',QA:'eu',KW:'eu',IL:'eu',SG:'eu',BR:'lat',MX:'lat',TR:'lat',RU:'lat',PL:'lat',AR:'lat',CO:'lat',CL:'lat',TH:'lat',MY:'lat',ZA:'lat',UA:'lat',RO:'lat',IN:'asia',PK:'asia',BD:'asia',ID:'asia',PH:'asia',EG:'asia',NG:'asia',VN:'asia',LK:'asia',NP:'asia',KE:'asia',MA:'asia',DZ:'asia',IQ:'asia'};
+function audKey(c){return aud==='auto'?(TIER[c.country]||'mix'):aud}
+function audOpts(sel,auto){return(auto?'<option value="auto"'+(sel==='auto'?' selected':'')+'>Auto (from channel country)</option>':'')+Object.keys(AUDS).map(function(k){return'<option value="'+k+'"'+(k===sel?' selected':'')+'>'+AUDS[k][0]+'</option>'}).join('')}
 function money(n){return n>=1e6?'$'+(n/1e6).toFixed(2)+'M':n>=1e3?'$'+(n/1e3).toFixed(1)+'K':'$'+Math.round(n)}
-function range(v,n){return money(v*n[1]/1000)+' – '+money(v*n[2]/1000)}
+function range(v,n,m){m=m==null?1:m;return money(v*n[1]*m/1000)+' – '+money(v*n[2]*m/1000)}
 function nicheOpts(sel){return Object.keys(NICHES).map(function(k){return'<option value="'+k+'"'+(k===sel?' selected':'')+'>'+NICHES[k][0]+'</option>'}).join('')}
 function monthlyViews(c){var L=c.latest||[];if(L.length<2)return null;var t=L.map(function(v){return+new Date(v.published)}),span=(Math.max.apply(null,t)-Math.min.apply(null,t))/864e5;if(span<1)span=1;var per=Math.min(30,(L.length-1)/span*30);var avg=L.reduce(function(s,v){return s+v.views},0)/L.length;return Math.round(avg*per)}
-function earnHtml(c){var mv=monthlyViews(c);if(mv==null)return'';var n=NICHES[niche];
-return'<div class="earn"><h3>Estimated earnings</h3><label class="sub">Niche <select id="nz">'+nicheOpts(niche)+'</select></label>'+
-'<div class="stats"><div class="stat"><b>'+range(mv,n)+'</b><span>Per month (about '+fmt(mv)+' views)</span></div><div class="stat"><b>'+range(mv*12,n)+'</b><span>Per year</span></div><div class="stat"><b>'+range(c.views,n)+'</b><span>Lifetime ad revenue</span></div></div>'+
-'<p class="chart-note">Estimate from recent uploads and a rough earnings range per 1,000 views. Only the channel owner sees real earnings. Sponsorships and other income are not included.</p></div>'}
-function calcRender(){var dv=Math.max(0,+$('dv').value||0),n=NICHES[$('cn').value]||NICHES.general;
-$('co').innerHTML='<div class="stat"><b>'+range(dv,n)+'</b><span>Per day</span></div><div class="stat"><b>'+range(dv*30,n)+'</b><span>Per month</span></div><div class="stat"><b>'+range(dv*365,n)+'</b><span>Per year</span></div>'}
-function calcInit(){$('cn').innerHTML=nicheOpts('general');$('dv').addEventListener('input',calcRender);$('cn').addEventListener('change',calcRender);calcRender()}
+function earnHtml(c){var mv=monthlyViews(c);if(mv==null)return'';var n=NICHES[niche],m=AUDS[audKey(c)][1];
+return'<div class="earn"><h3>Estimated earnings</h3><label class="sub">Niche <select id="nz">'+nicheOpts(niche)+'</select></label><label class="sub">Audience <select id="az">'+audOpts(aud,true)+'</select></label>'+
+'<div class="stats"><div class="stat"><b>'+range(mv,n,m)+'</b><span>Per month (about '+fmt(mv)+' views)</span></div><div class="stat"><b>'+range(mv*12,n,m)+'</b><span>Per year</span></div><div class="stat"><b>'+range(c.views,n,m)+'</b><span>Lifetime ad revenue</span></div></div>'+
+'<p class="chart-note">Estimate from recent uploads and a rough earnings range per 1,000 views, adjusted for the audience region. The real audience mix is unknown, so try the Audience menu. Only the channel owner sees real earnings. Sponsorships and other income are not included.</p></div>'}
+function calcRender(){var dv=Math.max(0,+$('dv').value||0),n=NICHES[$('cn').value]||NICHES.general,m=(AUDS[$('ca').value]||AUDS.mix)[1];
+$('co').innerHTML='<div class="stat"><b>'+range(dv,n,m)+'</b><span>Per day</span></div><div class="stat"><b>'+range(dv*30,n,m)+'</b><span>Per month</span></div><div class="stat"><b>'+range(dv*365,n,m)+'</b><span>Per year</span></div>'}
+function calcInit(){$('cn').innerHTML=nicheOpts('general');$('ca').innerHTML=audOpts('mix',false);$('ca').addEventListener('change',calcRender);$('dv').addEventListener('input',calcRender);$('cn').addEventListener('change',calcRender);calcRender()}
 function $(i){return document.getElementById(i)}
 function fmt(n){if(n==null)return'Hidden';if(n>=1e9)return(n/1e9).toFixed(2)+'B';if(n>=1e6)return(n/1e6).toFixed(2)+'M';if(n>=1e3)return(n/1e3).toFixed(1)+'K';return String(n)}
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')}
@@ -218,7 +224,7 @@ $('result').innerHTML='<div class="card"><div class="ch-head"><img class="avatar
 '<div class="stats"><div class="stat"><b>'+fmt(c.subs)+'</b><span>Subscribers</span></div><div class="stat"><b>'+fmt(c.views)+'</b><span>Total views</span></div><div class="stat"><b>'+c.videos.toLocaleString()+'</b><span>Videos</span></div><div class="stat"><b>'+fmt(c.avg)+'</b><span>Avg views per video</span></div></div>'+
 earnHtml(c)+(vids?'<h3 class="sec">Latest videos</h3><div class="vids">'+vids+'</div>':'')+
 '<div class="cmp"><h3 class="sec" style="margin-top:0">Compare with another channel</h3><form class="cf" id="cf"><input id="c2" type="text" placeholder="Name or @handle" aria-label="Second channel"><button type="submit">Compare</button></form>'+cm+'</div></div>';
-if($('nz'))$('nz').onchange=function(){niche=this.value;render()};$('cf').addEventListener('submit',function(e){e.preventDefault();var q=$('c2').value;if(!q.trim())return;load(q).then(function(o){if(o){cmp=o;render()}})});
+if($('nz'))$('nz').onchange=function(){niche=this.value;render()};if($('az'))$('az').onchange=function(){aud=this.value;render()};$('cf').addEventListener('submit',function(e){e.preventDefault();var q=$('c2').value;if(!q.trim())return;load(q).then(function(o){if(o){cmp=o;render()}})});
 }
 function renderTable(){
 var rows=topList.slice().sort(function(a,b){return(b[sortK]||0)-(a[sortK]||0)});
