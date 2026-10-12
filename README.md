@@ -23,3 +23,4 @@ One-page YouTube channel stats site: static `index.html` + two serverless functi
 - Edit `privacy.html` (add a contact email) and review it.
 - Add the site in Google Search Console and submit `sitemap.xml`.
 - RPM ranges in `index.html` (`NICHES`) are rough guesses: adjust them as you learn more.
+Live
