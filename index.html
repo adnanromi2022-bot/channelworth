@@ -112,6 +112,7 @@ footer a{color:inherit}
 .earn select,.cg select,.cg input{font:inherit;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-top:4px;width:100%}
 .earn select{background:var(--surface);width:auto;margin:0 0 12px}
 .earn label{display:inline-block;margin-right:14px}
+.hint{color:var(--warn);font-size:14px;margin:0 0 10px}
 .cg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:20px}
 .cg label{font-size:15px;color:var(--muted)}
 .earn .stats{margin:12px 0 10px}
@@ -196,8 +197,8 @@ function money(n){return n>=1e6?'$'+(n/1e6).toFixed(2)+'M':n>=1e3?'$'+(n/1e3).to
 function range(v,n,m){m=m==null?1:m;return money(v*n[1]*m/1000)+' – '+money(v*n[2]*m/1000)}
 function nicheOpts(sel){return Object.keys(NICHES).map(function(k){return'<option value="'+k+'"'+(k===sel?' selected':'')+'>'+NICHES[k][0]+'</option>'}).join('')}
 function monthlyViews(c){var L=c.latest||[];if(L.length<2)return null;var t=L.map(function(v){return+new Date(v.published)}),span=(Math.max.apply(null,t)-Math.min.apply(null,t))/864e5;if(span<1)span=1;var per=Math.min(30,(L.length-1)/span*30);var avg=L.reduce(function(s,v){return s+v.views},0)/L.length;return Math.round(avg*per)}
-function earnHtml(c){var mv=monthlyViews(c);if(mv==null)return'';var n=NICHES[niche],m=AUDS[audKey(c)][1];
-return'<div class="earn"><h3>Estimated earnings</h3><label class="sub">Niche <select id="nz">'+nicheOpts(niche)+'</select></label><label class="sub">Audience <select id="az">'+audOpts(aud,true)+'</select></label>'+
+function earnHtml(c){var mv=monthlyViews(c);if(mv==null)return'';var n=NICHES[niche],m=AUDS[audKey(c)][1],note=(aud==='auto'&&!TIER[c.country])?'<p class="hint">'+(c.country?'No regional rate for '+esc(country(c.country))+', so the global mix is used.':'This channel has not set a country, so the global mix is used.')+' Change Audience for a better estimate.</p>':'';
+return'<div class="earn"><h3>Estimated earnings</h3><label class="sub">Niche <select id="nz">'+nicheOpts(niche)+'</select></label><label class="sub">Audience <select id="az">'+audOpts(aud,true)+'</select></label>'+note+
 '<div class="stats"><div class="stat"><b>'+range(mv,n,m)+'</b><span>Per month (about '+fmt(mv)+' views)</span></div><div class="stat"><b>'+range(mv*12,n,m)+'</b><span>Per year</span></div><div class="stat"><b>'+range(c.views,n,m)+'</b><span>Lifetime ad revenue</span></div></div>'+
 '<p class="chart-note">Estimate from recent uploads and a rough earnings range per 1,000 views, adjusted for the audience region. The real audience mix is unknown, so try the Audience menu. Only the channel owner sees real earnings. Sponsorships and other income are not included.</p></div>'}
 function calcRender(){var dv=Math.max(0,+$('dv').value||0),n=NICHES[$('cn').value]||NICHES.general,m=(AUDS[$('ca').value]||AUDS.mix)[1];
